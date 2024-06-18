@@ -1,0 +1,49 @@
+app:
+    baseUrl: http://localhost:8080
+    railway:
+        jwtSecret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+        jwtExpirationMs: 8640000
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5432/railway
+        username: postgres
+        password: n3iU&pztAXO9
+        driver-class-name: org.postgresql.Driver
+        #url: jdbc:postgresql://viaduct.proxy.rlwy.net:46071/railway
+        #url: postgresql://postgres:ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ@postgres.railway.internal:5432/railway
+        #username: postgres
+        #password: ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ
+        #driver-class-name: org.postgresql.Driver
+    jpa:
+        hibernate:
+            ddl-auto: create-drop
+        show-sql: true
+        properties:
+            hibernate:
+            format-sql: true
+        database: postgresql
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: "Marta.software.noreply@gmail.com"
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
+        password: "jruhiipfmgkagjcx"
+    #data:
+    #    mongodb:
+    #        url: mongodb://mongo:lOdFnL426Z2wJUgv4C8A@containers-us-west-42.railway.app:7675
+    #        authentication-database: admin
+    #        username: mongo
+    #        password: lOdFnL426Z2wJUgv4C8A
+    #        port: 7675
+    #        host: containers-us-west-42.railway.app
+    #mvc:
+    #    pathmatch:
+    #        matching-strategy: ant_path_matcher
+#server:
+#   port: ${PORT:3000}

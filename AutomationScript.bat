@@ -1,0 +1,1 @@
+copy "C:\Users\rnlabor\Desktop\security\target\docker-spring-boot.jar" "C:\Users\rnlabor\Desktop\security\docker-spring-boot.jar" /Y

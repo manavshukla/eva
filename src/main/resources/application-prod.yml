@@ -1,5 +1,5 @@
 app:
-    baseUrl: https://springsecuritybackend-production-1792.up.railway.app
+    baseUrl: springsecuritybackend-production-1792.up.railway.app
     railway:
         jwtSecret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
         jwtExpirationMs: 8640000

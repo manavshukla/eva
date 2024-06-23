@@ -11,9 +11,9 @@ spring:
         #url: postgresql://postgres:ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ@roundhouse.proxy.rlwy.net:23980/railway
         username: postgres
         password: ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ
-        host: roundhouse.proxy.rlwy.net
-        port: 23980
-        database: railway
+        #host: roundhouse.proxy.rlwy.net
+        #port: 23980
+        #database: railway
         driver-class-name: org.postgresql.Driver
         # roundhouse.proxy.rlwy.net:23980
     jpa:

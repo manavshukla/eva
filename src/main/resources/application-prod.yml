@@ -1,5 +1,5 @@
 app:
-    baseUrl: http://localhost:8080
+    baseUrl: http://springsecuritybackend-production-1792.up.railway.app
     railway:
         jwtSecret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
         jwtExpirationMs: 8640000
@@ -7,9 +7,10 @@ app:
 spring:
     datasource:
         #url: jdbc:postgresql://viaduct.proxy.rlwy.net:46071/railway
-        url: postgresql://postgres:ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ@roundhouse.proxy.rlwy.net:23980/railway
+        #url: postgresql://postgres:ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ@roundhouse.proxy.rlwy.net:23980/railway
         username: postgres
-        password: n3iU&pztAXO9
+        password: ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ
+        host: jdbc:postgresql://roundhouse.proxy.rlwy.net/railway
         #password: ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ
         driver-class-name: org.postgresql.Driver
     jpa:

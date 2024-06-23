@@ -6,7 +6,7 @@ app:
         #user token
 spring:
     datasource:
-        #url: jdbc:postgresql://viaduct.proxy.rlwy.net:46071/railway
+        url: jdbc:postgresql://roundhouse.proxy.rlwy.net:23980/railway
         #url: postgresql://postgres:ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ@roundhouse.proxy.rlwy.net:23980/railway
         username: postgres
         password: ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ
@@ -15,6 +15,7 @@ spring:
         database: railway
         #password: ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ
         driver-class-name: org.postgresql.Driver
+        # roundhouse.proxy.rlwy.net:23980
         # roundhouse.proxy.rlwy.net:23980
     jpa:
         hibernate:

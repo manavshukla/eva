@@ -6,7 +6,8 @@ app:
         #user token
 spring:
     datasource:
-        url: jdbc:postgresql://roundhouse.proxy.rlwy.net:23980/railway
+        url: jdbc:postgresql://postgres:ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ@roundhouse.proxy.rlwy.net:23980/railway
+        # postgresql://postgres:ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ@roundhouse.proxy.rlwy.net:23980/railway
         #url: postgresql://postgres:ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ@roundhouse.proxy.rlwy.net:23980/railway
         username: postgres
         password: ClCmYoFmscBKWTOSxGlQXpVJUuhfePeQ

@@ -51,6 +51,6 @@ spring:
     #    pathmatch:
     #        matching-strategy: ant_path_matcher
 #server:
-#    port: ${PORT:3000}
+    port: ${PORT:3000}
 
 

@@ -46,7 +46,7 @@ spring:
     #mvc:
     #    pathmatch:
     #        matching-strategy: ant_path_matcher
-#server:
+server:
     port: ${PORT:3000}
 
 

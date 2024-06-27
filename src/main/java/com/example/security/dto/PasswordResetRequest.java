@@ -8,6 +8,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 @AllArgsConstructor
 public class PasswordResetRequest {
-    @JsonProperty("new-password")
+    @JsonProperty("newPassword")
     private String newPassword;
 }

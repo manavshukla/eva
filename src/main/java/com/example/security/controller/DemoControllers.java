@@ -4,11 +4,10 @@ import com.example.security.model.*;
 import com.example.security.repository.TemporalEmailsRepository;
 import com.example.security.service.EmailSenderService;
 import com.example.security.service.GlobalUpcBarcodesService;
-import com.example.security.service.LocalUpcBarcodesService;
+import com.example.security.service.ProductsService;
 import com.example.security.service.SoldItemsService;
 import com.example.security.service.TemporalEmailsService;
 
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +25,7 @@ public class DemoControllers {
     @Autowired
     private final GlobalUpcBarcodesService globalUpcBarcodesService;
     @Autowired
-    private final LocalUpcBarcodesService localUpcBarcodesService;
+    private final ProductsService productsService;
     @Autowired
     private final TemporalEmailsService temporalEmailsService;
 
@@ -43,13 +42,13 @@ public class DemoControllers {
                        TemporalEmailsService temporalEmailsService,
                        SoldItemsService soldItemsService,
                        GlobalUpcBarcodesService globalUpcBarcodesService,
-                       LocalUpcBarcodesService localUpcBarcodesService
+                       ProductsService productsService
     ) {
         this.emailSenderService = emailSenderService;
         this.temporalEmailsService = temporalEmailsService;
         this.soldItemsService = soldItemsService;
         this.globalUpcBarcodesService = globalUpcBarcodesService;
-        this.localUpcBarcodesService = localUpcBarcodesService;
+        this.productsService = productsService;
     }
 
 
@@ -83,23 +82,30 @@ public class DemoControllers {
         return this.globalUpcBarcodesService.getGlobalUpcBarcodes();
     }
 
+
+
+
+
+
     //Save Local upc barcodes
     //will need to add the session key later
-    @PostMapping("/barcodes/saveLocalUpcBarcodes")
-    public ResponseEntity saveLocalBarcodes(@RequestBody List<LocalUpcBarcodes> barcodes) {
-        this.localUpcBarcodesService.save(barcodes);
+    @PostMapping("/barcodes/saveProducts")
+    public ResponseEntity saveLocalBarcodes(@RequestBody List<Products> barcodes) {
+        this.productsService.save(barcodes);
         return ResponseEntity.ok("Items saved");
     }
     // Also session key is needed later
     // needs to have a parameter bin
-    @GetMapping("/barcodes/getLocalUpcBarcodes/{companyCode}")
-    public List<LocalUpcBarcodes> getLocalUpcBarcodes(@PathVariable String companyCode) {
-        return this.localUpcBarcodesService.getLocalUpcBarcodes(companyCode);
+    @GetMapping("/barcodes/getProducts/{companyCode}")
+    public List<Products> getProducts(@PathVariable String companyCode) {
+        return this.productsService.getProducts(companyCode);
     }
 
 
 
-    
+
+
+
 
     //save the emails with temporary verification codes
     @PostMapping("/temporal-email/save")

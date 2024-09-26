@@ -26,7 +26,7 @@ public class ProductsServiceImpl implements ProductsService {
         repository.delete(barcodes);
     }
 
-    public List<Products> getProducts(String companyCode) {
-        return repository.getProducts(companyCode);
+    public List<Products> getProducts(String shopId) {
+        return repository.getProducts(shopId);
     }
 }

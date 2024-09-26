@@ -18,14 +18,14 @@ public class Products {
     @Id
     @GeneratedValue
     private long id;
-    private long upcean;
     private String name;
-    private long categoryId;
-    private String categoryName;
-    private long brandId;
-    private String brandName;
-    private String companyCode;
-    private Double price;
+    private String productDesc;
+    private String productType;
+    private String barcode;
+    private String productImg;
+    private Double buyingPrice;
+    private Double salesPrice;
     private String quantityUnitType;
-    private Boolean specialProductTag;
+    private Integer category;
+    private Long shopId;
 }

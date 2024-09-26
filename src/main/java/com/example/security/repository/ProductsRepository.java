@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface ProductsRepository extends JpaRepository<Products, Integer> {
-    @Query("SELECT l FROM Products l WHERE l.companyCode = :c")
-    public List<Products> getProducts(@Param("c") String companyCode);
+    @Query("SELECT l FROM Products l WHERE l.shopId = :c")
+    public List<Products> getProducts(@Param("c") String shopId);
 }

@@ -96,9 +96,9 @@ public class DemoControllers {
     }
     // Also session key is needed later
     // needs to have a parameter bin
-    @GetMapping("/barcodes/getProducts/{companyCode}")
-    public List<Products> getProducts(@PathVariable String companyCode) {
-        return this.productsService.getProducts(companyCode);
+    @GetMapping("/barcodes/getProducts/{shopId}")
+    public List<Products> getProducts(@PathVariable String shopId) {
+        return this.productsService.getProducts(shopId);
     }
 
 

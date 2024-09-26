@@ -10,5 +10,5 @@ public interface ProductsService {
 
     public void delete(Products barcodes);
 
-    public List<Products> getProducts(String companyCode);
+    public List<Products> getProducts(String shopId);
 }

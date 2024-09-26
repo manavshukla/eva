@@ -12,8 +12,8 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "soldItems")
-public class SoldItem {
+@Table(name = "Sales")
+public class Sales {
 
     @Id
     @GeneratedValue

@@ -5,7 +5,7 @@ import com.example.security.repository.TemporalEmailsRepository;
 import com.example.security.service.EmailSenderService;
 import com.example.security.service.GlobalUpcBarcodesService;
 import com.example.security.service.ProductsService;
-import com.example.security.service.SoldItemsService;
+import com.example.security.service.SalesService;
 import com.example.security.service.TemporalEmailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class DemoControllers {
     // Service instances
     private final EmailSenderService emailSenderService;
     @Autowired
-    private final SoldItemsService soldItemsService;
+    private final SalesService salesService;
     @Autowired
     private final GlobalUpcBarcodesService globalUpcBarcodesService;
     @Autowired
@@ -40,13 +40,13 @@ public class DemoControllers {
 
     public DemoControllers(EmailSenderService emailSenderService,
                        TemporalEmailsService temporalEmailsService,
-                       SoldItemsService soldItemsService,
+                       SalesService salesService,
                        GlobalUpcBarcodesService globalUpcBarcodesService,
                        ProductsService productsService
     ) {
         this.emailSenderService = emailSenderService;
         this.temporalEmailsService = temporalEmailsService;
-        this.soldItemsService = soldItemsService;
+        this.salesService = salesService;
         this.globalUpcBarcodesService = globalUpcBarcodesService;
         this.productsService = productsService;
     }
@@ -61,10 +61,10 @@ public class DemoControllers {
 
 
 
-    @PostMapping("/api/v1/saveSoldItems")
-    public ResponseEntity saveSoldItems(@RequestBody List<SoldItem> soldItems) {
+    @PostMapping("/api/v1/saveSales")
+    public ResponseEntity saveSales(@RequestBody List<Sales> sales) {
         System.out.println("trying to save");
-        this.soldItemsService.save(soldItems);
+        this.salesService.save(sales);
         return ResponseEntity.ok("Items saved");
     }
 

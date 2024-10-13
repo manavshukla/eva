@@ -27,8 +27,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-// Shop and user is almost the same.This class was named User before and then refactored to Shop
-// Shop is a central table and the fact table
+// Shop and user is almost the same.This class was named User before and then refactored to Shop.
+// Shop is a central table and the fact table.
 
 @Data
 @Builder
@@ -53,20 +53,6 @@ public class Shop implements UserDetails {
     private String shopAddress;
     private Boolean locked;
     private Boolean enabled;
-    @GeneratedValue
-    private Long cashierCashierId;
-    @GeneratedValue
-    private Long stockStockId;
-    @GeneratedValue
-    private Long utilizationUtilizationId;
-    @GeneratedValue
-    private Long productsProductId;
-    @GeneratedValue
-    private Long salesSalesId;
-    @GeneratedValue
-    private Long distributorsDistributorsId;
-    @GeneratedValue
-    private Long procurementProcurementId;
 
 
 

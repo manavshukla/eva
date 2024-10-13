@@ -1,23 +1,23 @@
 package com.example.security.service;
 
-import com.example.security.model.User;
+import com.example.security.model.Shop;
 
 import jakarta.mail.MessagingException;
 
 public interface UserService {
 	
-	public User findByEmail(String email);
+	public Shop findByEmail(String email);
 
-	public User enableUser(String token);
+	public Shop enableUser(String token);
 
-	User register(User newUser);
+	Shop register(Shop newShop);
 
 	void updatePassword(String token, String newPassword);
 
-	void sendResetTokenEmail(String token, User user) throws MessagingException;
+	void sendResetTokenEmail(String token, Shop shop) throws MessagingException;
 
-	void sendVerificationEmail(String token, User user) throws MessagingException;
+	void sendVerificationEmail(String token, Shop shop) throws MessagingException;
 	
-	void deleteUser(User user);
+	void deleteUser(Shop shop);
 
 }

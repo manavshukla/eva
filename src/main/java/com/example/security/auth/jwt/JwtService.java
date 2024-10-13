@@ -6,9 +6,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import java.security.Key;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.example.security.model.User;
+import com.example.security.model.Shop;
 
 import javax.crypto.SecretKey;
 
@@ -43,10 +42,10 @@ public class JwtService {
     }
     
     public String generateJwtToken(Authentication authentication) {
-        User userPrincipal = (User) authentication.getPrincipal();
+        Shop shopPrincipal = (Shop) authentication.getPrincipal();
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getEmail()))
+                .setSubject((shopPrincipal.getEmail()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs*1000))
                 .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()), SignatureAlgorithm.HS512)

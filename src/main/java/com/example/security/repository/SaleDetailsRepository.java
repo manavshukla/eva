@@ -1,10 +1,9 @@
 package com.example.security.repository;
 
+import com.example.security.model.SalesDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.security.model.Sales;
-
 @Repository
-public interface SalesRepository extends JpaRepository<Sales, Integer> {
+public interface SaleDetailsRepository extends JpaRepository<SalesDetail, Long> {
 }

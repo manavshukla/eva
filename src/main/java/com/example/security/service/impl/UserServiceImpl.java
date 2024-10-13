@@ -3,29 +3,27 @@ package com.example.security.service.impl;
 import java.security.SecureRandom;
 import java.util.Optional;
 
+import com.example.security.model.Shop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.security.model.User;
 import com.example.security.model.UserToken;
-import com.example.security.repository.UserRepository;
+import com.example.security.repository.ShopRepository;
 import com.example.security.repository.UserTokenRepository;
 import com.example.security.service.EmailSenderService;
 import com.example.security.service.UserService;
 
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class UserServiceImpl implements UserService{
 
 	@Autowired
-	private UserRepository userRepository;
+	private ShopRepository shopRepository;
 	
 	@Autowired
     private JavaMailSender mailSender;
@@ -65,63 +63,63 @@ public class UserServiceImpl implements UserService{
     }
     
 	@Override
-	public User findByEmail(String email) {
-		Optional<User> userOptional = userRepository.findByEmail(email);
+	public Shop findByEmail(String email) {
+		Optional<Shop> userOptional = shopRepository.findByEmail(email);
 		return userOptional.orElse(null);
 	}
 	
 	@Override
-	public User register(User newUser) {
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        newUser.setEnabled(false);
-        return userRepository.save(newUser);
+	public Shop register(Shop newShop) {
+        newShop.setPassword(passwordEncoder.encode(newShop.getPassword()));
+        newShop.setEnabled(false);
+        return shopRepository.save(newShop);
     }
 
 	@Override
     public void updatePassword(String token, String newPassword) {
         UserToken resetToken = userTokenRepository.findByToken(token);
-        User user = resetToken.getUser();
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
+        Shop shop = resetToken.getShop();
+        shop.setPassword(passwordEncoder.encode(newPassword));
+        shopRepository.save(shop);
     }
 
     @Override
-    public User enableUser(String token) {
+    public Shop enableUser(String token) {
         UserToken verificationToken = userTokenRepository.findByToken(token);
-        User user = verificationToken.getUser();
-        user.setEnabled(true);
-        userRepository.save(user);
-        return user;
+        Shop shop = verificationToken.getShop();
+        shop.setEnabled(true);
+        shopRepository.save(shop);
+        return shop;
     }
 
     @Override
     @Async
-    // Send an email to the user with a link to reset their password
+    // Send an email to the shop with a link to reset their password
     // the baseUrl should actually be a reset password form in the frontend
     // without a password, which then you can use to send a request with the same token and new-password to the backend
-    public void sendResetTokenEmail(String token, User user) throws MessagingException {
-        // Generate a random password for the user using and randomizer
+    public void sendResetTokenEmail(String token, Shop shop) throws MessagingException {
+        // Generate a random password for the shop using and randomizer
         String newRandomPassword = generateRandomPassword();
 
-    	String url = baseUrl + "/api/v1/auth/reset-password?token=" + token; //+ "&new-password=" + user.getEmail();
-    	emailSenderService.sendEmail(user.getEmail(), 
+    	String url = baseUrl + "/api/v1/auth/reset-password?token=" + token; //+ "&new-password=" + shop.getEmail();
+    	emailSenderService.sendEmail(shop.getEmail(),
     			"Password Reset Request", "To reset your password, click the link below:\n" + url);
 
     }
 
     @Override
     @Async
-    public void sendVerificationEmail(String token, User user) throws MessagingException {
+    public void sendVerificationEmail(String token, Shop shop) throws MessagingException {
     	String url = baseUrl + "/api/v1/auth/verify-account?token=" + token;
-    	emailSenderService.sendEmail(user.getEmail(), 
+    	emailSenderService.sendEmail(shop.getEmail(),
     			"Verify your account", "To verify your account, click the link below:\n" + url);
     }
 
 	@Override
-	public void deleteUser(User user) {
-        user.getRoles().clear();
-        userRepository.save(user);
-		userRepository.delete(user);
+	public void deleteUser(Shop shop) {
+        shop.getRoles().clear();
+        shopRepository.save(shop);
+		shopRepository.delete(shop);
 		
 	}
 

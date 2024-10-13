@@ -1,13 +1,12 @@
 package com.example.security.repository;
 
+import com.example.security.model.Shop;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import com.example.security.model.User;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
-    Optional<User> findByEmail(String email);
+public interface ShopRepository extends JpaRepository<Shop, Integer> {
+    Optional<Shop> findByEmail(String email);
 }

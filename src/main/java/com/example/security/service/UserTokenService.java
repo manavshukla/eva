@@ -1,11 +1,11 @@
 package com.example.security.service;
 
-import com.example.security.model.User;
+import com.example.security.model.Shop;
 import com.example.security.model.UserToken;
 
 public interface UserTokenService {
 
-    public UserToken createToken(User user, UserToken.TokenType type);
+    public UserToken createToken(Shop shop, UserToken.TokenType type);
 
     public boolean validateToken(String token, UserToken.TokenType type);
     

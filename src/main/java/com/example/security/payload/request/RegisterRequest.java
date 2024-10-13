@@ -11,16 +11,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-// define snake case for the field names
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RegisterRequest {
 
     private String email;
     private String password;
     private String corporateType;
-    private String propertyNameField1;
-    private String propertyNameField2;
-    private String selectedCityId;
+    private String shopRegistrationData1;
+    private String shopRegistrationData2;
+    private String shopCity;
     private String shopName;
     private String shopAddress;
 }
+
+

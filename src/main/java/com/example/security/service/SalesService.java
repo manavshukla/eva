@@ -1,12 +1,13 @@
 package com.example.security.service;
 
-import java.util.List;
-
-import com.example.security.model.Sales;
+import com.example.security.model.Sale;
+import com.example.security.payload.request.SalesRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface SalesService {
 
-    public void save(List<Sales> sales);
+    void save(SalesRequest salesRequest);
 
-    public void delete(Sales sales);
+    Page<Sale> list(Pageable pageable);
 }

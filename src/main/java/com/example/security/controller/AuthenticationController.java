@@ -2,6 +2,7 @@ package com.example.security.controller;
 
 
 import com.example.security.dto.PasswordResetRequest;
+import com.example.security.model.Shop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.security.auth.AuthenticationService;
-import com.example.security.model.User;
 import com.example.security.model.UserToken;
 import com.example.security.payload.request.LoginRequest;
 import com.example.security.payload.request.RegisterRequest;
@@ -44,7 +44,7 @@ public class AuthenticationController {
             @RequestBody RegisterRequest request
     ) {
     	UserToken token = null;
-    	User createdUser = null;
+    	Shop createdShop = null;
 
         String email = request.getEmail();
         String password = request.getPassword();
@@ -73,21 +73,21 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        // Check if user exists
+        // Check if shop exists
         if(userService.findByEmail(email) != null) {
-            MessageResponse response = new MessageResponse("User already exists");
+            MessageResponse response = new MessageResponse("Shop already exists");
             return ResponseEntity.badRequest().body(response);
         }
         try{
         	JwtResponse response = Authservice.register(request);
-        	createdUser = userService.findByEmail(response.getEmail());
-        	token = tokenService.createToken(createdUser, 
+        	createdShop = userService.findByEmail(response.getEmail());
+        	token = tokenService.createToken(createdShop,
         			UserToken.TokenType.ACCOUNT_VERIFICATION);
-        	userService.sendVerificationEmail(token.getToken(), createdUser);
+        	userService.sendVerificationEmail(token.getToken(), createdShop);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
         	tokenService.deleteToken(token);
-        	userService.deleteUser(createdUser);
+        	userService.deleteUser(createdShop);
         	MessageResponse errorResponse = new MessageResponse(e.getClass() +  e.getMessage());
             return ResponseEntity.badRequest().body(errorResponse);
         } catch (MessagingException e) {
@@ -108,7 +108,7 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body(response);
         }
         if(userService.findByEmail(request.getEmail()) == null) {
-            MessageResponse response = new MessageResponse("User not found");
+            MessageResponse response = new MessageResponse("Shop not found");
             return ResponseEntity.badRequest().body(response);
         }
 
@@ -125,11 +125,11 @@ public class AuthenticationController {
     public ResponseEntity<?> forgotPassword(@RequestParam String email) {
     	UserToken token = null;
     	try {
-    		User user = userService.findByEmail(email);
-    		if (user != null) {
-    			token = tokenService.createToken(user, UserToken.TokenType.PASSWORD_RESET);
+    		Shop shop = userService.findByEmail(email);
+    		if (shop != null) {
+    			token = tokenService.createToken(shop, UserToken.TokenType.PASSWORD_RESET);
             
-				userService.sendResetTokenEmail(token.getToken(), user);
+				userService.sendResetTokenEmail(token.getToken(), shop);
             return ResponseEntity.ok("Reset token sent to " + email);
     		}
     	} catch (Exception e) {
@@ -144,7 +144,7 @@ public class AuthenticationController {
     public ResponseEntity<?> verifyAccount(@RequestParam String token) {
         try {
             if (tokenService.validateToken(token, UserToken.TokenType.ACCOUNT_VERIFICATION)) {
-                User user = userService.enableUser(token);
+                Shop shop = userService.enableUser(token);
                 MessageResponse response = new MessageResponse("Account has been verified and activated");
                 return ResponseEntity.ok().body(response);
             }

@@ -4,7 +4,7 @@ import com.example.security.model.*;
 import com.example.security.repository.TemporalEmailsRepository;
 import com.example.security.service.EmailSenderService;
 import com.example.security.service.GlobalUpcBarcodesService;
-import com.example.security.service.ProductsService;
+import com.example.security.service.ProductService;
 import com.example.security.service.SalesService;
 import com.example.security.service.TemporalEmailsService;
 
@@ -21,11 +21,7 @@ public class DemoControllers {
     // Service instances
     private final EmailSenderService emailSenderService;
     @Autowired
-    private final SalesService salesService;
-    @Autowired
     private final GlobalUpcBarcodesService globalUpcBarcodesService;
-    @Autowired
-    private final ProductsService productsService;
     @Autowired
     private final TemporalEmailsService temporalEmailsService;
 
@@ -42,13 +38,11 @@ public class DemoControllers {
                        TemporalEmailsService temporalEmailsService,
                        SalesService salesService,
                        GlobalUpcBarcodesService globalUpcBarcodesService,
-                       ProductsService productsService
+                       ProductService productService
     ) {
         this.emailSenderService = emailSenderService;
         this.temporalEmailsService = temporalEmailsService;
-        this.salesService = salesService;
         this.globalUpcBarcodesService = globalUpcBarcodesService;
-        this.productsService = productsService;
     }
 
 
@@ -59,14 +53,6 @@ public class DemoControllers {
     }
 
 
-
-
-    @PostMapping("/api/v1/saveSales")
-    public ResponseEntity saveSales(@RequestBody List<Sales> sales) {
-        System.out.println("trying to save");
-        this.salesService.save(sales);
-        return ResponseEntity.ok("Items saved");
-    }
 
 
 
@@ -81,29 +67,6 @@ public class DemoControllers {
     public List<GlobalUpcBarcodes> getGlobalUpcBarcodes() {
         return this.globalUpcBarcodesService.getGlobalUpcBarcodes();
     }
-
-
-
-
-
-
-    //Save Local upc barcodes
-    //will need to add the session key later
-    @PostMapping("/barcodes/saveProducts")
-    public ResponseEntity saveLocalBarcodes(@RequestBody List<Products> barcodes) {
-        this.productsService.save(barcodes);
-        return ResponseEntity.ok("Items saved");
-    }
-    // Also session key is needed later
-    // needs to have a parameter bin
-    @GetMapping("/barcodes/getProducts/{shopId}")
-    public List<Products> getProducts(@PathVariable String shopId) {
-        return this.productsService.getProducts(shopId);
-    }
-
-
-
-
 
 
 

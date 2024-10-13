@@ -1,13 +1,11 @@
 package com.example.security.model;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -25,7 +23,7 @@ public class UserToken {
     private TokenType type;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private User user;
+    private Shop shop;
 
     public enum TokenType {
         PASSWORD_RESET,

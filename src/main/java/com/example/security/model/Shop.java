@@ -26,16 +26,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
+
+// Shop and user is almost the same.This class was named User before and then refactored to Shop
+// Shop is a central table and the fact table
 
 @Data
 @Builder
 @AllArgsConstructor
 @Entity
-@Table(name = "_user")
+@Table(name = "_shop")
 @EqualsAndHashCode
 @NoArgsConstructor
-public class User implements UserDetails {
+public class Shop implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -44,14 +46,30 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String corporateType;
-    private String propertyNameField1;
-    private String propertyNameField2;
-    private String selectedCityID;
+    private String shopRegistrationData1;
+    private String shopRegistrationData2;
+    private String shopCity;
     private String shopName;
     private String shopAddress;
     private Boolean locked;
     private Boolean enabled;
-    
+    @GeneratedValue
+    private Long cashierCashierId;
+    @GeneratedValue
+    private Long stockStockId;
+    @GeneratedValue
+    private Long utilizationUtilizationId;
+    @GeneratedValue
+    private Long productsProductId;
+    @GeneratedValue
+    private Long salesSalesId;
+    @GeneratedValue
+    private Long distributorsDistributorsId;
+    @GeneratedValue
+    private Long procurementProcurementId;
+
+
+
     @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     @JoinTable(	name = "user_roles",

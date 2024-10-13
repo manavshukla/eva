@@ -12,18 +12,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.example.security.repository.UserRepository;
+import com.example.security.repository.ShopRepository;
 
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserRepository repository;
+    private final ShopRepository repository;
 
     @Bean
     public UserDetailsService userDetailsService(){
         return username -> repository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("Shop not found"));
     }
 
 

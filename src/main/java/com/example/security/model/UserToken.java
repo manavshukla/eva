@@ -23,7 +23,7 @@ public class UserToken {
     private TokenType type;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Shop shop;
+    private User user;
 
     public enum TokenType {
         PASSWORD_RESET,

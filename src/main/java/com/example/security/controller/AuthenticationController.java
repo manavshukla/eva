@@ -2,7 +2,7 @@ package com.example.security.controller;
 
 
 import com.example.security.dto.PasswordResetRequest;
-import com.example.security.model.Shop;
+import com.example.security.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -44,7 +44,7 @@ public class AuthenticationController {
             @RequestBody RegisterRequest request
     ) {
     	UserToken token = null;
-    	Shop createdShop = null;
+    	User createdUser = null;
 
         String email = request.getEmail();
         String password = request.getPassword();
@@ -80,14 +80,14 @@ public class AuthenticationController {
         }
         try{
         	JwtResponse response = Authservice.register(request);
-        	createdShop = userService.findByEmail(response.getEmail());
-        	token = tokenService.createToken(createdShop,
+        	createdUser = userService.findByEmail(response.getEmail());
+        	token = tokenService.createToken(createdUser,
         			UserToken.TokenType.ACCOUNT_VERIFICATION);
-        	userService.sendVerificationEmail(token.getToken(), createdShop);
+        	userService.sendVerificationEmail(token.getToken(), createdUser);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
         	tokenService.deleteToken(token);
-        	userService.deleteUser(createdShop);
+        	userService.deleteUser(createdUser);
         	MessageResponse errorResponse = new MessageResponse(e.getClass() +  e.getMessage());
             return ResponseEntity.badRequest().body(errorResponse);
         } catch (MessagingException e) {
@@ -125,11 +125,11 @@ public class AuthenticationController {
     public ResponseEntity<?> forgotPassword(@RequestParam String email) {
     	UserToken token = null;
     	try {
-    		Shop shop = userService.findByEmail(email);
-    		if (shop != null) {
-    			token = tokenService.createToken(shop, UserToken.TokenType.PASSWORD_RESET);
+    		User user = userService.findByEmail(email);
+    		if (user != null) {
+    			token = tokenService.createToken(user, UserToken.TokenType.PASSWORD_RESET);
             
-				userService.sendResetTokenEmail(token.getToken(), shop);
+				userService.sendResetTokenEmail(token.getToken(), user);
             return ResponseEntity.ok("Reset token sent to " + email);
     		}
     	} catch (Exception e) {
@@ -144,7 +144,7 @@ public class AuthenticationController {
     public ResponseEntity<?> verifyAccount(@RequestParam String token) {
         try {
             if (tokenService.validateToken(token, UserToken.TokenType.ACCOUNT_VERIFICATION)) {
-                Shop shop = userService.enableUser(token);
+                User user = userService.enableUser(token);
                 MessageResponse response = new MessageResponse("Account has been verified and activated");
                 return ResponseEntity.ok().body(response);
             }

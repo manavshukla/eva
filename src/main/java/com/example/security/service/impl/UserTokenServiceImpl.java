@@ -3,7 +3,7 @@ package com.example.security.service.impl;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.example.security.model.Shop;
+import com.example.security.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +16,10 @@ public class UserTokenServiceImpl implements UserTokenService {
     @Autowired
     private UserTokenRepository userTokenRepository;
 
-    public UserToken createToken(Shop shop, UserToken.TokenType type) {
+    public UserToken createToken(User user, UserToken.TokenType type) {
     	UserToken token = new UserToken();
         token.setToken(UUID.randomUUID().toString());
-        token.setShop(shop);
+        token.setUser(user);
         //for validate and verification
         token.setExpiryDate(LocalDateTime.now().plusDays(1));
         token.setType(type);

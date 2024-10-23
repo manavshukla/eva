@@ -20,7 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.example.security.model.Shop;
+import com.example.security.model.User;
 
 import javax.crypto.SecretKey;
 
@@ -42,10 +42,10 @@ public class JwtService {
     }
     
     public String generateJwtToken(Authentication authentication) {
-        Shop shopPrincipal = (Shop) authentication.getPrincipal();
+        User userPrincipal = (User) authentication.getPrincipal();
 
         return Jwts.builder()
-                .setSubject((shopPrincipal.getEmail()))
+                .setSubject((userPrincipal.getEmail()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs*1000))
                 .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()), SignatureAlgorithm.HS512)

@@ -74,6 +74,7 @@ public class AuthenticationController {
         }
 
         // Check if shop exists
+        // AB
         if(userService.findByEmail(email) != null) {
             MessageResponse response = new MessageResponse("Shop already exists");
             return ResponseEntity.badRequest().body(response);

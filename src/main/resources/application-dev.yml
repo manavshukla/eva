@@ -44,6 +44,6 @@ spring:
     #        host: containers-us-west-42.railway.app
     #mvc:
     #    pathmatch:
-    #        matching-strategy: ant_path_matcher
+    #        matching-strategy: ant_path_matcher Assylbek B
 #server:
-#   port: ${PORT:3000}
+#   port: ${PORT:3000} AB

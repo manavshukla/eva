@@ -18,8 +18,6 @@ public class Sale extends BaseShopEntity{
     @GeneratedValue
     private Long id;
 
-    private Long userId;
-
     private Double totalAmount;
     private Double totalProfit;
     private Double cashReceived;
@@ -27,5 +25,7 @@ public class Sale extends BaseShopEntity{
 
     @OneToMany(mappedBy = "sale")
     private Set<SalesDetail> details;
+
+    private Long createdBy;
 
 }

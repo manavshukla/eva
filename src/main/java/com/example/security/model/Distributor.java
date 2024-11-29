@@ -14,8 +14,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "distributors")
 
-public class Distributor extends BaseEntity {
+public class Distributor extends BaseShopEntity {
 
   private String name;
+  private String email;
+  private String number;
 
 }

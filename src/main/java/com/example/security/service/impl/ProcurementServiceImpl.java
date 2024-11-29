@@ -12,6 +12,7 @@ import com.example.security.repository.ProcurementRepository;
 import com.example.security.repository.ProductRepository;
 import com.example.security.service.ProcurementService;
 import com.example.security.service.ProductService;
+import com.example.security.service.UserService;
 import com.example.security.utils.AuthUtil;
 import java.beans.Transient;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class ProcurementServiceImpl implements ProcurementService {
   private final ProcurementRepository procurementRepository;
   private final ProcurementDetailsRepository procurementDetailsRepository;
   private final ProductService productService;
+  private final AuthUtil authUtil;
 
   @Transient
   public void save(ProcurementRequest procurementRequest) {
@@ -38,6 +40,7 @@ public class ProcurementServiceImpl implements ProcurementService {
                                   .totalAmount(procurementRequest.getTotalAmount())
                                   .purchaseDate(procurementRequest.getPurchaseDate())
                                   .distributor(distributor)
+                                  .createdBy(authUtil.getLoggedInUser().getId())
                                   .build();
 
     procurementRepository.save(procurement);

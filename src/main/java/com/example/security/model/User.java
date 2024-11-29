@@ -1,5 +1,6 @@
 package com.example.security.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,6 +37,7 @@ public class User extends BaseShopEntity implements UserDetails {
 
   @Column(unique = true)
   private String email;
+  @JsonIgnore
   private String password;
   private Boolean locked;
   private Boolean enabled;

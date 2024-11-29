@@ -32,4 +32,6 @@ public class Procurement extends BaseShopEntity{
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "distributor_id", referencedColumnName = "id")
     Distributor distributor;
+
+    private Long createdBy;
 }

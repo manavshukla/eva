@@ -17,8 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 public class SalesRequest {
 
-    private Long userId;
-
     @NotNull
     @Min(1)
     private Double totalAmount;

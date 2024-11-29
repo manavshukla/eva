@@ -28,6 +28,7 @@ public class SalesServiceImpl implements SalesService {
   private final SaleRepository saleRepository;
   private final SaleDetailsRepository saleDetailsRepository;
   private final ProductService productService;
+  private final AuthUtil authUtil;
 
   @Transactional
   public void save(SalesRequest salesRequest) {
@@ -35,8 +36,8 @@ public class SalesServiceImpl implements SalesService {
                     .modeOfPayment(salesRequest.getModeOfPayment())
                     .cashReceived(salesRequest.getCashReceived())
                     .totalAmount(salesRequest.getTotalAmount())
-                    .userId(salesRequest.getUserId())
                     .totalProfit(salesRequest.getTotalProfit())
+                    .createdBy(authUtil.getLoggedInUser().getId())
                     .build();
 
     saleRepository.save(sale);

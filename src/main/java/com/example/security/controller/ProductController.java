@@ -1,14 +1,17 @@
 package com.example.security.controller;
 
+import com.example.security.exception.ProductException;
 import com.example.security.model.Product;
 import com.example.security.payload.request.ProductRequest;
 import com.example.security.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/products")
+@Validated
 public class ProductController {
 
     private final ProductService productService;
@@ -28,6 +32,11 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Void> create(@Valid @RequestBody ProductRequest request) {
+        if (StringUtils.equalsIgnoreCase(request.getProductType(), "barcoded")) {
+            if (StringUtils.isEmpty(request.getBarcode())) {
+                throw new ProductException("For barcoded product barcode can not be null or empty");
+            }
+        }
         productService.save(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -52,25 +61,6 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //AB

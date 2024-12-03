@@ -21,10 +21,10 @@ import lombok.NonNull;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-	@Autowired
+    @Autowired
     private JwtService jwtService;
-	
-	@Autowired
+
+    @Autowired
     private UserDetailsService userDetailsService;
 
     @Override
@@ -39,14 +39,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
         //System.out.println(ignoredPaths);
-        if ( authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             //System.out.println(ignoredPaths);
             filterChain.doFilter(request, response);
             return;
         }
         jwt = parseJwt(request);
         if (jwt != null && jwtService.validateJwtToken(jwt)) {
-        	userEmail = jwtService.extractUsername(jwt);
+            userEmail = jwtService.extractUsername(jwt);
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
@@ -57,7 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-    
+
     private String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
 

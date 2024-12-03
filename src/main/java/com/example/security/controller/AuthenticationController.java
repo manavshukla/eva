@@ -2,10 +2,17 @@ package com.example.security.controller;
 
 
 import com.example.security.dto.PasswordResetRequest;
+import com.example.security.exception.AuthenticationException;
+import com.example.security.exception.RegistrationException;
+import com.example.security.exception.ShopException;
 import com.example.security.model.User;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,117 +35,105 @@ import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@Validated
 public class AuthenticationController {
 
-	@Autowired
+    @Autowired
     private AuthenticationService Authservice;
-	
-	@Autowired
-	private UserService userService;
-    
+
+    @Autowired
+    private UserService userService;
+
     @Autowired
     private UserTokenService tokenService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register (
-            @RequestBody RegisterRequest request
+    public ResponseEntity<?> register(
+            @Valid @RequestBody RegisterRequest request
     ) {
-    	UserToken token = null;
-    	User createdUser = null;
+        UserToken token = null;
+        User createdUser = null;
 
         String email = request.getEmail();
         String password = request.getPassword();
 
         // Check if email and password are not null
-        if(email == null || password == null) {
-            MessageResponse response = new MessageResponse("Email and password are required");
-            return ResponseEntity.badRequest().body(response);
+        if (email == null || password == null) {
+            throw new AuthenticationException("Email and password are required");
         }
 
         // Check if email is valid
         String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
         Pattern emailPattern = Pattern.compile(emailRegex);
         Matcher emailMatcher = emailPattern.matcher(email);
-        if(!emailMatcher.matches()) {
-            MessageResponse response = new MessageResponse("Invalid email format");
-            return ResponseEntity.badRequest().body(response);
+        if (!emailMatcher.matches()) {
+            throw new AuthenticationException(" Invalid email format");
         }
 
         // Check if password is valid
-        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,}$";
+        String passwordRegex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{5,}$";
         Pattern passwordPattern = Pattern.compile(passwordRegex);
         Matcher passwordMatcher = passwordPattern.matcher(password);
-        if(!passwordMatcher.matches()) {
-            MessageResponse response = new MessageResponse("Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number");
-            return ResponseEntity.badRequest().body(response);
+        if (!passwordMatcher.matches()) {
+            throw new AuthenticationException("Password must be at least 5 characters long and contain at least one uppercase letter, one lowercase letter, and one number");
         }
 
         // Check if shop exists
         // AB
-        if(userService.findByEmail(email) != null) {
-            MessageResponse response = new MessageResponse("Shop already exists");
-            return ResponseEntity.badRequest().body(response);
+        if (userService.findByEmail(email) != null) {
+            throw new AuthenticationException("Shop already exists");
         }
-        try{
-        	JwtResponse response = Authservice.register(request);
-        	createdUser = userService.findByEmail(response.getEmail());
-        	token = tokenService.createToken(createdUser,
-        			UserToken.TokenType.ACCOUNT_VERIFICATION);
-        	userService.sendVerificationEmail(token.getToken(), createdUser);
+        try {
+            JwtResponse response = Authservice.register(request);
+            createdUser = userService.findByEmail(response.getEmail());
+            token = tokenService.createToken(createdUser,
+                    UserToken.TokenType.ACCOUNT_VERIFICATION);
+            userService.sendVerificationEmail(token.getToken(), createdUser);
             return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-        	tokenService.deleteToken(token);
-        	userService.deleteUser(createdUser);
-        	MessageResponse errorResponse = new MessageResponse(e.getClass() +  e.getMessage());
-            return ResponseEntity.badRequest().body(errorResponse);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             tokenService.deleteToken(token);
-        	userService.deleteUser(userService.findByEmail(request.getEmail()));
-        	MessageResponse errorResponse = new MessageResponse(e.getMessage());
-            return ResponseEntity.badRequest().body(errorResponse);
-		}
+            userService.deleteUser(createdUser);
+            throw new RegistrationException("Error while registration, Error :" + e.getMessage());
+        }
     }
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate (
+    public ResponseEntity<?> authenticate(
             @RequestBody LoginRequest request
     ) {
-        if(request.getEmail() == null || request.getPassword() == null) {
-            MessageResponse response = new MessageResponse("Email and password are required");
-            return ResponseEntity.badRequest().body(response);
+        if (request.getEmail() == null || request.getPassword() == null) {
+            throw new AuthenticationException("Email and password are required");
         }
-        if(userService.findByEmail(request.getEmail()) == null) {
-            MessageResponse response = new MessageResponse("Shop not found");
-            return ResponseEntity.badRequest().body(response);
+        if (userService.findByEmail(request.getEmail()) == null) {
+            throw new ShopException("Shop not found");
         }
 
         try {
             return ResponseEntity.ok(Authservice.authenticate(request));
         } catch (BadCredentialsException e) {
-            MessageResponse response = new MessageResponse("Invalid email or password");
-            return ResponseEntity.badRequest().body(response);
+            throw new AuthenticationException("Invalid email or password");
         }
     }
-    
-    
+
+
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
-    	UserToken token = null;
-    	try {
-    		User user = userService.findByEmail(email);
-    		if (user != null) {
-    			token = tokenService.createToken(user, UserToken.TokenType.PASSWORD_RESET);
-            
-				userService.sendResetTokenEmail(token.getToken(), user);
-            return ResponseEntity.ok("Reset token sent to " + email);
-    		}
-    	} catch (Exception e) {
-    		if(token != null)
-    			tokenService.deleteToken(token);
-    		return ResponseEntity.badRequest().body(e.getMessage());
-		}
-    	return ResponseEntity.badRequest().body("Email not found");
+    public ResponseEntity<?> forgotPassword(@RequestParam @Email(message = "Invalid email format") String email) {
+        UserToken token = null;
+        try {
+            User user = userService.findByEmail(email);
+            if (user != null) {
+                token = tokenService.createToken(user, UserToken.TokenType.PASSWORD_RESET);
+
+                userService.sendResetTokenEmail(token.getToken(), user);
+                return ResponseEntity.ok("Reset token sent to " + email);
+            }
+        } catch (Exception e) {
+            if (token != null)
+                tokenService.deleteToken(token);
+            throw new AuthenticationException("Error while either creating token or sending token email to user, Error: " + e.getMessage());
+        }
+        throw new AuthenticationException("Email not found");
     }
 
     @PostMapping("/verify-account")
@@ -149,29 +144,23 @@ public class AuthenticationController {
                 MessageResponse response = new MessageResponse("Account has been verified and activated");
                 return ResponseEntity.ok().body(response);
             }
-            MessageResponse response = new MessageResponse("Invalid or expired token");
-            return ResponseEntity.badRequest().body(response);
+            throw new AuthenticationException("Invalid or expired token");
         } catch (Exception e) {
-            MessageResponse response = new MessageResponse(e.getMessage());
-            return ResponseEntity.internalServerError().body(response);
+            throw new AuthenticationException("Error while validating token, Error: " + e.getMessage());
         }
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestParam String token, @RequestBody PasswordResetRequest request) {
+    public ResponseEntity<?> resetPassword(@RequestParam String token, @RequestBody @Valid PasswordResetRequest request) {
         try {
             if (tokenService.validateToken(token, UserToken.TokenType.PASSWORD_RESET)) {
                 userService.updatePassword(token, request.getNewPassword());
                 MessageResponse response = new MessageResponse("Password has been reset successfully");
                 return ResponseEntity.ok(response);
             }
-            MessageResponse response = new MessageResponse("Invalid or expired token");
-            return ResponseEntity.badRequest().body(response);
+            throw new AuthenticationException("Invalid or expired token");
         } catch (Exception e) {
-            MessageResponse response = new MessageResponse(e.getMessage());
-            return ResponseEntity.internalServerError().body(response);
+            throw new AuthenticationException("Error while reset the password, Error: " + e.getMessage());
         }
     }
-    
-
 }

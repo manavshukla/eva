@@ -14,23 +14,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProductRequest {
 
-    @NotEmpty
+    @NotEmpty(message = "Name can not be null")
     private String name;
 
     private String productDesc;
 
-    @NotEmpty
+    @NotEmpty(message = "Product Type can not be null")
     private String productType;
 
-    @NotEmpty
     private String barcode;
 
     private String productImg;
 
-    @Min(1)
+    @Min(0)
     private Double buyingPrice;
 
-    @Min(1)
+    @Min(0)
     private Double salesPrice;
 
     private String quantityUnitType;

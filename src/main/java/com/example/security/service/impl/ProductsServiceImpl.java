@@ -1,5 +1,6 @@
 package com.example.security.service.impl;
 
+import com.example.security.exception.ProductException;
 import com.example.security.payload.request.ProductRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class ProductsServiceImpl implements ProductService {
   @Override
   public Product getById(Long id) {
     return productRepository.findById(id)
-               .orElseThrow(() -> new RuntimeException("No product found"));
+               .orElseThrow(() -> new ProductException("No product found with id: "+id));
   }
 
   @Override

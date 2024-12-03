@@ -42,14 +42,14 @@ public class AuthenticationService {
     public JwtResponse register(RegisterRequest request) {
         Role rp = roleRepository.findByName(UserRole.USER).orElse(null);
 
-       var shop=  Shop.builder()
-            .corporateType(request.getCorporateType())
-            .shopRegistrationData1(request.getShopRegistrationData1())
-            .shopRegistrationData2(request.getShopRegistrationData2())
-            .shopCity(request.getShopCity())
-            .shopName(request.getShopName())
-            .shopAddress(request.getShopAddress())
-            .build();
+        var shop = Shop.builder()
+                .corporateType(request.getCorporateType())
+                .shopRegistrationData1(request.getShopRegistrationData1())
+                .shopRegistrationData2(request.getShopRegistrationData2())
+                .shopCity(request.getShopCity())
+                .shopName(request.getShopName())
+                .shopAddress(request.getShopAddress())
+                .build();
         shopRepository.save(shop);
 
         var user = User.builder()

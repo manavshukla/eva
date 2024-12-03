@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class ProcurementServiceImpl implements ProcurementService {
+public class  ProcurementServiceImpl implements ProcurementService {
 
   private final ProcurementRepository procurementRepository;
   private final ProcurementDetailsRepository procurementDetailsRepository;

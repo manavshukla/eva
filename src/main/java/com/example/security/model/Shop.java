@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "shops")
 @NoArgsConstructor
 public class Shop extends BaseEntity {
-  private String corporateType;
-  private String shopRegistrationData1;
-  private String shopRegistrationData2;
-  private String shopCity;
-  private String shopName;
-  private String shopAddress;
+    private String corporateType;
+    private String shopRegistrationData1;
+    private String shopRegistrationData2;
+    private String shopCity;
+    private String shopName;
+    private String shopAddress;
 }
